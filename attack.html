@@ -1,33 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Send Email with Image</title>
-  <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-</head>
-<body>
-  <h2>Send an Email with an Image</h2>
-  <button id="sendEmailBtn">Send Email</button>
-
-  <script type="text/javascript">
-    // Initialize EmailJS with your user ID
-    emailjs.init('mvPM810kGmqfsM3rM'); // Replace with your EmailJS User ID
-
-    document.getElementById('sendEmailBtn').addEventListener('click', function() {
-      // Send the email using the EmailJS API
-      emailjs.send("service_91ln9iw", "template_zjpvcel", {
-        to_email: "jjimenez84@gatech.edu",
-        subject: "Test Email with Image",
-        message: "Hello, please see the image below.",
-        image_url: "https://example.com/path_to_image.jpg" // URL of the image you want to include
+<form id="emailForm">
+    <input type="text" name="subject" placeholder="Subject" required>
+    <textarea name="body" placeholder="Body" required></textarea>
+    <button type="submit">Send Email</button>
+  </form>
+  
+  <script>
+  document.getElementById('emailForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+  
+      const subject = e.target.subject.value;
+      const body = e.target.body.value;
+  
+      fetch('/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subject, body }),
       })
-      .then(function(response) {
-        console.log("Email sent successfully:", response);
-      }, function(error) {
-        console.log("Error:", error);
-      });
-    });
+      .then(response => response.json())
+      .then(data => alert('Email sent successfully!'))
+      .catch(error => console.error('Error:', error));
+  });
   </script>
-</body>
-</html>
+  
