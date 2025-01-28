@@ -1,39 +1,41 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
-require('dotenv').config();  // To load credentials securely
+const cors = require('cors');  // Import the cors package
+require('dotenv').config();  // Ensure .env is loaded for email credentials
 
 const app = express();
+app.use(cors());  // Use CORS middleware to enable cross-origin requests
 app.use(express.json());  // Middleware to parse JSON request bodies
 
 // Create a transporter object using Gmail's SMTP
 const transporter = nodemailer.createTransport({
-  service: 'gmail',  // Use Gmail SMTP
+  service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER,  // Your Gmail address (e.g., youremail@gmail.com)
-    pass: process.env.EMAIL_PASS,  // Your Gmail password or app password
+    user: process.env.EMAIL_USER,  // Your Gmail address from .env
+    pass: process.env.EMAIL_PASS,  // Your Gmail app password from .env
   },
 });
 
 // Route to handle sending the email
-app.post('/send-email', (req, res) => {
+app.post('/send-email', async (req, res) => {
   const { subject, body } = req.body;
 
   const mailOptions = {
     from: 'chickennuggets@example.com',  // Spoof the "from" address
-    to: 'your-email@example.com',        // Your real email or any recipient
+    to: process.env.EMAIL_USER,          // Send to your email (using .env for better security)
     subject: subject,                    // Subject from form input
     text: body,                          // Body from form input
   };
 
-  // Send the email using Nodemailer
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log('Error:', error);
-      return res.status(500).json({ error: 'Failed to send email' });
-    }
+  try {
+    // Send the email using Nodemailer
+    const info = await transporter.sendMail(mailOptions);
     console.log('Email sent:', info.response);
-    return res.status(200).json({ message: 'Email sent successfully!' });
-  });
+    res.status(200).json({ message: 'Email sent successfully!' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({ error: 'Failed to send email', details: error.message });
+  }
 });
 
 // Start the server
