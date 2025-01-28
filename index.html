@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send Email Form</title>
+</head>
+<body>
+  <h1>Send an Email</h1>
+  <form id="emailForm">
+    <input type="text" name="subject" placeholder="Subject" required>
+    <textarea name="body" placeholder="Body" required></textarea>
+    <button type="submit">Send Email</button>
+  </form>
+
+  <script>
+  document.getElementById('emailForm').addEventListener('submit', function(e) {
+      e.preventDefault();  // Prevent form submission to allow for fetch
+
+      const subject = e.target.subject.value;
+      const body = e.target.body.value;
+
+      // Send data to the backend
+      fetch('http://localhost:3000/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subject, body }),
+      })
+      .then(response => response.json())
+      .then(data => alert(data.message || 'Email sent successfully!'))
+      .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to send email');
+      });
+  });
+  </script>
+</body>
+</html>
