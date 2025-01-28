@@ -3,36 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Send Email Form</title>
+  <title>Send Test Email</title>
 </head>
 <body>
-  <h1>Send an Email</h1>
+  <h1>Send Email from Chickennuggets</h1>
   <form id="emailForm">
-    <input type="text" name="subject" placeholder="Subject" required>
-    <textarea name="body" placeholder="Body" required></textarea>
+    <label for="subject">Subject:</label>
+    <input type="text" name="subject" id="subject" required><br><br>
+
+    <label for="body">Body:</label>
+    <textarea name="body" id="body" required></textarea><br><br>
+
     <button type="submit">Send Email</button>
   </form>
 
   <script>
-  document.getElementById('emailForm').addEventListener('submit', function(e) {
-      e.preventDefault();  // Prevent form submission to allow for fetch
+    // Adding event listener for form submission
+    document.getElementById('emailForm').addEventListener('submit', function(e) {
+      e.preventDefault();  // Prevent form from submitting traditionally
 
       const subject = e.target.subject.value;
       const body = e.target.body.value;
 
-      // Send data to the backend
-      fetch('http://localhost:3000/send-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ subject, body }),
+      // Make a POST request to send the email
+      fetch('/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ subject, body }),  // Send subject and body
       })
       .then(response => response.json())
-      .then(data => alert(data.message || 'Email sent successfully!'))
+      .then(data => {
+        if (data.message) {
+          alert('Email sent successfully!');
+        }
+      })
       .catch(error => {
-          console.error('Error:', error);
-          alert('Failed to send email');
+        console.error('Error:', error);
+        alert('Failed to send email.');
       });
-  });
+    });
   </script>
 </body>
 </html>
