@@ -1,41 +1,28 @@
-const express = require('express');
 const nodemailer = require('nodemailer');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-require('dotenv').config(); // Load environment variables
+require('dotenv').config();  // Ensure you load email credentials securely
 
-const app = express();
-app.use(cors()); // Enable CORS
-app.use(bodyParser.json()); // Parse JSON bodies
-
-// Route to handle email sending
-app.post('/send-email', async (req, res) => {
-  const { subject, body } = req.body;
-
-  // Create reusable transporter using Gmail service
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER, // Use email from .env
-      pass: process.env.EMAIL_PASS, // Use password from .env
-    },
-  });
-
-  const mailOptions = {
-    from: process.env.EMAIL_USER, // Your email address
-    to: process.env.EMAIL_USER,   // Send to the same email address
-    subject,
-    text: body,
-  };
-
-  try {
-    // Send email
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ message: 'Email sent successfully!' });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to send email', details: error });
-  }
+// Create a transporter object using Gmail's SMTP
+const transporter = nodemailer.createTransport({
+  service: 'gmail',  // Use Gmail SMTP
+  auth: {
+    user: process.env.EMAIL_USER,  // Your Gmail address (e.g., youremail@gmail.com)
+    pass: process.env.EMAIL_PASS,  // Your Gmail password or app password
+  },
 });
 
-// Start the server
-app.listen(3000, () => console.log('Server is running on port 3000'));
+// Email options
+const mailOptions = {
+  from: 'chickennuggets@example.com',  // Spoof the "from" address
+  to: 'your-email@example.com',        // Your real email or any recipient
+  subject: 'Test Email from Chickennuggets',
+  text: 'This is a test email sent from the spoofed address chickennuggets@example.com!',
+};
+
+// Send the email
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.log('Error:', error);
+  } else {
+    console.log('Email sent:', info.response);
+  }
+});
