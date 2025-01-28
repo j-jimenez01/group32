@@ -1,10 +1,12 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
-const cors = require('cors');  // Import the cors package
-require('dotenv').config();  // Ensure .env is loaded for email credentials
+const cors = require('cors');  // Import CORS package
+require('dotenv').config();  // Load environment variables securely
 
 const app = express();
-app.use(cors());  // Use CORS middleware to enable cross-origin requests
+
+// Allow all origins to access the backend (can be restricted later)
+app.use(cors());
 app.use(express.json());  // Middleware to parse JSON request bodies
 
 // Create a transporter object using Gmail's SMTP
@@ -28,7 +30,6 @@ app.post('/send-email', async (req, res) => {
   };
 
   try {
-    // Send the email using Nodemailer
     const info = await transporter.sendMail(mailOptions);
     console.log('Email sent:', info.response);
     res.status(200).json({ message: 'Email sent successfully!' });
@@ -38,7 +39,7 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-// Start the server
+// Start the server on port 3000
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
 });

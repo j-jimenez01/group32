@@ -26,7 +26,7 @@
       const body = e.target.body.value;
 
       // Make a POST request to send the email
-      fetch('/send-email', {
+      fetch('http://localhost:3000/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
