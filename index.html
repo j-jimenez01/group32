@@ -14,6 +14,9 @@
     <label for="body">Body:</label>
     <textarea name="body" id="body" required></textarea><br><br>
 
+    <label for="customSender">Custom Sender:</label>
+    <input type="text" name="customSender" id="customSender" required><br><br>
+
     <button type="submit">Send Email</button>
   </form>
 
@@ -24,6 +27,7 @@
 
       const subject = e.target.subject.value;
       const body = e.target.body.value;
+      const customSender = e.target.customSender.value;
 
       // Make a POST request to send the email
       fetch('http://localhost:3000/send-email', {
@@ -31,7 +35,11 @@
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ subject, body }),  // Send subject and body
+        body: JSON.stringify({
+          subject,
+          body,
+          customSender,  // Send the custom sender email
+        }),
       })
       .then(response => response.json())
       .then(data => {

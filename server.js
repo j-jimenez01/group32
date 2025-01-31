@@ -1,32 +1,37 @@
+// server.js
+
 const express = require('express');
 const nodemailer = require('nodemailer');
-const cors = require('cors');  // Import CORS package
-require('dotenv').config();  // Load environment variables securely
+const cors = require('cors');  // Import CORS
+require('dotenv').config();  // Load environment variables
 
 const app = express();
 
-// Allow all origins to access the backend (can be restricted later)
+// Enable CORS for all origins (you can restrict later)
 app.use(cors());
-app.use(express.json());  // Middleware to parse JSON request bodies
 
-// Create a transporter object using Gmail's SMTP
+// Middleware to parse JSON bodies from POST requests
+app.use(express.json());
+
+// Create a transporter object using Outlook's SMTP server
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: 'hotmail',  // Outlook uses 'hotmail' as the service
   auth: {
-    user: process.env.EMAIL_USER,  // Your Gmail address from .env
-    pass: process.env.EMAIL_PASS,  // Your Gmail app password from .env
+    user: process.env.EMAIL_USER,  // Your Outlook email (e.g., youremail@outlook.com)
+    pass: process.env.EMAIL_PASS,  // Your app password from .env
   },
 });
 
-// Route to handle sending the email
+// POST route to handle sending email
 app.post('/send-email', async (req, res) => {
-  const { subject, body } = req.body;
+  const { subject, body, customSender } = req.body;
 
+  // Create email options using the dynamic values sent from the frontend
   const mailOptions = {
-    from: 'chickennuggets@example.com',  // Spoof the "from" address
-    to: process.env.EMAIL_USER,          // Send to your email (using .env for better security)
-    subject: subject,                    // Subject from form input
-    text: body,                          // Body from form input
+    from: customSender,  // Custom "From" email address
+    to: process.env.EMAIL_USER,  // Your email address (or recipient address)
+    subject: subject,  // Subject from frontend form
+    text: body,  // Body from frontend form
   };
 
   try {
@@ -39,7 +44,8 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-// Start the server on port 3000
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
