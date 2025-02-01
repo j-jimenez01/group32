@@ -7,7 +7,7 @@ require('dotenv').config();  // Load environment variables
 
 const app = express();
 
-// Enable CORS for all origins (you can restrict later)
+// Enable CORS for all origins 
 app.use(cors());
 
 // Middleware to parse JSON bodies from POST requests
