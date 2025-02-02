@@ -14,6 +14,10 @@ const mailOptions = {
   to: 'c3cs491a@gmail.com',
   subject: 'Test email from Node.js',
   text: 'This is a test email sent from Node.js using Nodemailer!',
+  attachments: [{
+    filename:'image.pdf',
+    path: '/path/to/file'
+  }]
 };
 
 transporter.sendMail(mailOptions, (error, info) => { // Fixed arrow function syntax
