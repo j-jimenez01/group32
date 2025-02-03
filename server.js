@@ -10,14 +10,18 @@ const transporter = nodemailer.createTransport({
 });
 
 const mailOptions = {
-  from: '"notifications@infrastructure.com" <testing@123.com>', // Fixed email formatting
-  to: 'c3cs491a@gmail.com',
-  subject: 'Test email from Node.js',
-  text: 'This is a test email sent from Node.js using Nodemailer!',
+  from: '"Georgia Tech - Canvas<notiifications@instructure.com> " notiifications@instructure.com', // Fixed email formatting
+   to: 'jjimenez84@gatech.edu,ckesa3@gatech.edu,gkaur60@gatech.edu',
+  //to: 'jjimenez84@gatech.edu',
+  subject: 'Upcoming Canvas Maintenance',
+  html:'<p>Students/Staff,</p><p>We would like to inform you that Canvas will be undergoing scheduled maintenance on February 8th, 2025, from 10:00 PM to 4:00 AM (EST) to implement exciting new features.</p><p>During this time, there may be brief interruptions to service. We encourage you to <a href= "https://drive.google.com/file/d/1BuEMW8IrBRjGJ79STOZjGKUyFYRq_sCL/view?usp=share_link" target="_blank">review the attached document </a>for detailed overview of the cahgnes and improvements you can expect to see once the maintenance is complete.</p><p>Thank you for your understanding and cooperation.</p><p>Sincerly,</p><p>The Canvas Team</p> <br> <div style="text-align: center;"><img src="cid:logo" alt="Canvas Logo" width="150"/></div>',
+
+//logo
   attachments: [{
-    filename:'image.pdf',
-    path: '/path/to/file'
-  }]
+	path:'/home/kali/Documents/canvasLogo.png',
+	cid:'logo',
+  },
+  ],
 };
 
 transporter.sendMail(mailOptions, (error, info) => { // Fixed arrow function syntax
@@ -27,3 +31,6 @@ transporter.sendMail(mailOptions, (error, info) => { // Fixed arrow function syn
     console.log('Email sent: ' + info.response);
   }
 });
+
+
+// read spoof doc
