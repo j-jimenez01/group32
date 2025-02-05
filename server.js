@@ -14,7 +14,7 @@ const mailOptions = {
    to: 'jjimenez84@gatech.edu,ckesa3@gatech.edu,gkaur60@gatech.edu,akeya3@gatech.edu',
   //to: 'jjimenez84@gatech.edu',
   subject: 'Upcoming Canvas Maintenance',
-  html:'<p>Students/Staff,</p><p>We would like to inform you that Canvas will be undergoing scheduled maintenance on February 8th, 2025, from 10:00 PM to 4:00 AM (EST) to implement exciting new features.</p><p>During this time, there may be brief interruptions to service. We encourage you to <a href= "https://drive.google.com/uc?export=download&id=1BuEMW8IrBRjGJ79STOZjGKUyFYRq_sCL"target="_blank">review the attached document </a>for detailed overview of the cahgnes and improvements you can expect to see once the maintenance is complete.</p><p>Thank you for your understanding and cooperation.</p><p>Sincerly,</p><p>The Canvas Team</p> <br> <div style="text-align: center;"><img src="cid:logo" alt="Canvas Logo" width="150"/></div>',
+  html:'<p>Students/Staff,</p><p>We would like to inform you that Canvas will be undergoing scheduled maintenance on February 8th, 2025, from 10:00 PM to 4:00 AM (EST) to implement exciting new features.</p><p>During this time, there may be brief interruptions to service. We encourage you to <a href= "https://drive.google.com/uc?export=download&id=1BuEMW8IrBRjGJ79STOZjGKUyFYRq_sCL"target="_blank">review the attached document </a>for detailed overview of the changes and improvements you can expect to see once the maintenance is complete.</p><p>Thank you for your understanding and cooperation.</p><p>Sincerly,</p><p>The Canvas Team</p> <br> <div style="text-align: center;"><img src="cid:logo" alt="Canvas Logo" width="150"/></div>',
 
 //logo
   attachments: [{
@@ -33,4 +33,3 @@ transporter.sendMail(mailOptions, (error, info) => { // Fixed arrow function syn
 });
 
 
-// read spoof doc
